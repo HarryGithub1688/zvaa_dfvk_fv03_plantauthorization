@@ -60,7 +60,8 @@
         "sap.m": {},
         "sap.ui.core": {},
         "sap.ushell": {},
-        "sap.fe.templates": {}
+        "sap.fe.templates": {},
+        "sap.f": {}
       }
     },
     "contentDensities": {
@@ -92,18 +93,35 @@
     "resources": {
       "css": []
     },
+    "rootView": {
+      "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+      "type": "XML",
+      "async": true,
+      "id": "appRootView"
+    },
     "routing": {
-      "config": {},
+      "config": {
+        "routerClass": "sap.f.routing.Router",
+        "flexibleColumnLayout": {
+          "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded",
+          "defaultThreeColumnLayoutType": "ThreeColumnsMidExpanded"
+        }
+      },
       "routes": [
         {
           "pattern": ":?query:",
           "name": "PlantAuthorizationList",
-          "target": "PlantAuthorizationList"
+          "target": [
+            "PlantAuthorizationList"
+          ]
         },
         {
           "pattern": "PlantAuthorization({key}):?query:",
           "name": "PlantAuthorizationObjectPage",
-          "target": "PlantAuthorizationObjectPage"
+          "target": [
+            "PlantAuthorizationList",
+            "PlantAuthorizationObjectPage"
+          ]
         }
       ],
       "targets": {
@@ -127,10 +145,26 @@
                   "tableSettings": {
                     "type": "ResponsiveTable"
                   }
+                },
+                "@com.sap.vocabularies.UI.v1.SelectionFields": {
+                  "useSemanticDateRange": true,
+                  "filterFields": {
+                    "DeliveryDate": {
+                      "settings": {
+                        "defaultValues": [
+                          {
+                            "operator": "TODAY"
+                          }
+                        ]
+                      }
+                    }
+                  }
                 }
               }
             }
-          }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": ""
         },
         "PlantAuthorizationObjectPage": {
           "type": "Component",
@@ -141,7 +175,9 @@
               "editableHeaderContent": false,
               "contextPath": "/PlantAuthorization"
             }
-          }
+          },
+          "controlAggregation": "midColumnPages",
+          "contextPattern": "/PlantAuthorization({key})"
         }
       }
     }
